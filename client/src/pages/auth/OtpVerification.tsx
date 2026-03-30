@@ -1,0 +1,150 @@
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
+import { toast } from "sonner";
+
+
+
+const OtpVerification: React.FC = () => {
+
+  const location = useLocation();
+  const email = location.state?.email;
+
+  const navigate = useNavigate();
+  const [otp, setOtp] = useState<string[]>(["", "", "", ""]);
+
+  const handleChange = (index: number, value: string) => {
+    if (!/^\d*$/.test(value)) return;
+
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
+
+    // Auto focus next input
+    if (value && index < otp.length - 1) {
+      const next = document.getElementById(`otp-${index + 1}`);
+      next?.focus();
+    }
+  };
+
+  //Backend API
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const code = otp.join("");
+
+    try {
+      await axios.post("http://localhost:5000/api/auth/verify-otp", {
+        email,
+        otp: code,
+      });
+
+      toast.success("OTP verified successfully");
+
+      navigate("/reset-password", { state: { email } });
+
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Invalid OTP");
+    }
+  };
+
+  //Reset OTP
+
+  const handleResend = async () => {
+    try {
+      const id = toast.loading("Resending OTP...");
+
+      await axios.post("http://localhost:5000/api/auth/forgot-password", {
+        email: location.state?.email,
+      });
+
+      toast.success("OTP resent successfully", { id });
+
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Error resending OTP");
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+
+      <div className="w-full max-w-md bg-white shadow-2xl rounded-3xl md:px-8 px-4 md:py-8 py-4">
+
+        {/* Header */}
+        <div className="flex flex-col items-center mb-6">
+
+          <img
+            src="/logo1.png"
+            alt="CrickPulse"
+            className="h-12 mb-2"
+          />
+
+          <p className="text-gray-500 font-semibold text-xl md:text-2xl text-center">
+            OTP Verification
+          </p>
+
+          <span className="text-gray-400 text-sm text-center mt-1">
+            Enter the 4-digit code sent to your email
+          </span>
+
+        </div>
+
+        {/* OTP Form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+
+          <div className="flex justify-center gap-4">
+            {otp.map((digit, index) => (
+              <input
+                key={index}
+                id={`otp-${index}`}
+                type="text"
+                inputMode="numeric"
+                maxLength={1}
+                value={digit}
+                onChange={(e) => handleChange(index, e.target.value)}
+                className="w-12 h-12 text-center border rounded-xl focus:ring-2 focus:ring-blue-500 text-xl font-semibold outline-none"
+              />
+            ))}
+          </div>
+
+          {/* Verify Button */}
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 active:scale-95 text-white py-2.5 rounded-lg font-semibold transition"
+          >
+            Verify OTP
+          </button>
+
+        </form>
+
+        {/* Resend */}
+        <p className="text-center text-sm text-gray-500 mt-4">
+          Didn't receive the code?
+          <button
+            type="button"
+            onClick={handleResend}
+            className="text-blue-600 ml-1 font-medium underline"
+          >
+            Resend OTP
+          </button>
+        </p>
+
+        {/* Back to login */}
+        <p className="text-center text-sm text-gray-500 mt-6">
+          Remembered your password?
+          <Link
+            to="/login"
+            className="text-blue-600 ml-1 font-medium underline"
+          >
+            Login
+          </Link>
+        </p>
+
+      </div>
+    </div>
+  );
+};
+
+export default OtpVerification;
