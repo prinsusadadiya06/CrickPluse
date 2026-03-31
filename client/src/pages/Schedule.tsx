@@ -22,7 +22,7 @@ const Schedule: React.FC = () => {
     try {
       setLoading(true);
 
-      const res = await axios.get("http://localhost:5000/api/matches", {
+      const res = await axios.get("https://crickpluse.onrender.com/api/matches", {
         params:
           category && category !== "All Matches"
             ? { category }

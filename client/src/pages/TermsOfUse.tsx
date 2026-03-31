@@ -20,7 +20,7 @@ const TermsPage: React.FC = () => {
   useEffect(() => {
     const fetchTerms = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/terms");
+        const res = await axios.get("https://crickpluse.onrender.com/api/terms");
         setData(res.data);
       } catch (err) {
         console.error(err);

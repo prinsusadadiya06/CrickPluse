@@ -10,7 +10,7 @@ const Careers: React.FC = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/jobs");
+        const res = await axios.get("https://crickpluse.onrender.com/api/jobs");
 
         setJobs(res.data || []);
       } catch (error) {

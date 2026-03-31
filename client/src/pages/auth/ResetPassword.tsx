@@ -32,7 +32,7 @@ const ResetPassword: React.FC = () => {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/auth/reset-password", {
+      await axios.post("https://crickpluse.onrender.com/api/auth/reset-password", {
         email,
         newPassword,
       });

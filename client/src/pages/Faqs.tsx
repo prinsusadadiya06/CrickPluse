@@ -23,7 +23,7 @@ const FAQs: React.FC = () => {
   useEffect(() => {
     const fetchFAQs = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/faqs");
+        const res = await axios.get("https://crickpluse.onrender.com/api/faqs");
         setFaqData(res.data || []);
       } catch (error) {
         console.log("Error fetching FAQs");

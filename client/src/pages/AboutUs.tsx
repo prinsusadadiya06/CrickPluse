@@ -20,10 +20,9 @@ const AboutUs: React.FC = () => {
   useEffect(() => {
     const fetchAbout = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/about");
+        const res = await axios.get("https://crickpluse.onrender.com/api/about");
         setData(res.data);
       } catch (err) {
-        console.error(err);
       } finally {
         setLoading(false);
       }

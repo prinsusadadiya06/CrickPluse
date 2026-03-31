@@ -14,8 +14,8 @@ const News: React.FC = () => {
 
   const fetchNews = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/news");
-      const specialRes = await axios.get("http://localhost:5000/api/specials");
+      const res = await axios.get("https://crickpluse.onrender.com/api/news");
+      const specialRes = await axios.get("https://crickpluse.onrender.com/api/specials");
 
       const data = res.data;
 

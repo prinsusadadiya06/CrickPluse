@@ -30,7 +30,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchMatches = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/matches");
+        const res = await axios.get("https://crickpluse.onrender.com/api/matches");
         setMatches(res.data);
       } catch (err) {
         console.error("Error fetching matches:", err);
@@ -44,7 +44,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/news");
+        const res = await axios.get("https://crickpluse.onrender.com/api/news");
         setNews(res.data);
       } catch (err) {
         console.error("Error fetching news:", err);
@@ -96,7 +96,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/videos");
+        const res = await axios.get("https://crickpluse.onrender.com/api/videos");
         setVideos(res.data);
       } catch (err) {
         console.error("Error fetching videos:", err);
@@ -284,8 +284,8 @@ const Home: React.FC = () => {
 
               <div className="p-5">
                 <h3 className="font-bold mb-1">{item.title}</h3>
-                <p className="text-gray-500 text-sm">
-                  {item.description?.split(" ").slice(0, 25).join(" ")}...
+                <p className="text-gray-500 text-sm ">
+                  {item.description}
                 </p>
               </div>
             </Link>

@@ -15,9 +15,9 @@ const MatchDetails: React.FC = () => {
     const fetchAll = async () => {
       try {
         const [matchRes, newsRes, videoRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/matches"),
-          axios.get("http://localhost:5000/api/news"),
-          axios.get("http://localhost:5000/api/videos"),
+          axios.get("https://crickpluse.onrender.com/api/matches"),
+          axios.get("https://crickpluse.onrender.com/api/news"),
+          axios.get("https://crickpluse.onrender.com/api/videos"),
         ]);
 
         setMatches(matchRes.data);

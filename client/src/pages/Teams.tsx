@@ -25,7 +25,7 @@ const Teams: React.FC = () => {
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/teams");
+        const res = await axios.get("https://crickpluse.onrender.com/api/teams");
         setTeams(res.data);
       } catch (err) {
         console.error("Error fetching teams", err);

@@ -20,7 +20,7 @@ const PrivacyPolicy: React.FC = () => {
   useEffect(() => {
     const fetchPrivacy = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/privacy");
+        const res = await axios.get("https://crickpluse.onrender.com/api/privacy");
         setData(res.data);
       } catch (err) {
         console.error(err);

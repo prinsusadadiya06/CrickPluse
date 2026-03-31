@@ -33,7 +33,7 @@ const ForgotPassword: React.FC = () => {
     try {
       const id = toast.loading("Sending OTP...");
 
-      await axios.post("http://localhost:5000/api/auth/forgot-password", {
+      await axios.post("https://crickpluse.onrender.com/api/auth/forgot-password", {
         email,
       });
 

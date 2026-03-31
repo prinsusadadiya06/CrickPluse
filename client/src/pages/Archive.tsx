@@ -21,8 +21,8 @@ const Archive: React.FC = () => {
     const fetchMeta = async () => {
       try {
         const [catRes, yearRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/archive/categories"),
-          axios.get("http://localhost:5000/api/archive/years")
+          axios.get("https://crickpluse.onrender.com/api/archive/categories"),
+          axios.get("https://crickpluse.onrender.com/api/archive/years")
         ]);
 
         if (Array.isArray(catRes.data)) {
@@ -64,7 +64,7 @@ const Archive: React.FC = () => {
 
   const fetchArchive = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/archive", {
+      const res = await axios.get("https://crickpluse.onrender.com/api/archive", {
         params: {
           year: selectedYear,
         }

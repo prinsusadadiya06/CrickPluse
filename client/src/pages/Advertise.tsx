@@ -44,7 +44,7 @@ const Advertise: React.FC = () => {
     try {
       setLoading(true);
 
-      await axios.post("http://localhost:5000/api/advertise", formData);
+      await axios.post("https://crickpluse.onrender.com/api/advertise", formData);
 
        toast.success("Submitted successfully");
 
@@ -59,7 +59,6 @@ const Advertise: React.FC = () => {
       });
 
     } catch (error) {
-      console.error(error);
       setMessage("Something went wrong");
     } finally {
       setLoading(false);

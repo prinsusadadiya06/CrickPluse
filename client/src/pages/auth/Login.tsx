@@ -29,7 +29,7 @@ const Login: React.FC = () => {
     if (validateForm()) {
       try {
         const { data } = await axios.post(
-          "http://localhost:5000/api/auth/login",
+          "https://crickpluse.onrender.com/api/auth/login",
           {
             email,
             password,

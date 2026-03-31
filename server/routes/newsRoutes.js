@@ -8,6 +8,7 @@ router.get("/", async (req, res) => {
     const data = await News.find();
     res.json(data);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: "Error fetching news" });
   }
 });

@@ -30,7 +30,7 @@ const Register: React.FC = () => {
 
         if (validateForm()) {
             try {
-                await axios.post("http://localhost:5000/api/auth/register", {
+                await axios.post("https://crickpluse.onrender.com/api/auth/register", {
                     name,
                     email,
                     password,

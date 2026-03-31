@@ -18,7 +18,7 @@ const Videos: React.FC = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/videos");
+        const res = await axios.get("https://crickpluse.onrender.com/api/videos");
         setVideos(res.data);
       } catch (err) {
         console.error("Error fetching videos:", err);

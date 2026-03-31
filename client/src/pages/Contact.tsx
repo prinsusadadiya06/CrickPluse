@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import axios from "axios";
+import { toast } from "sonner";
 
 const Contact: React.FC = () => {
 
@@ -26,9 +27,12 @@ const Contact: React.FC = () => {
     try {
       setLoading(true);
 
-      await axios.post("http://localhost:5000/api/contact", form);
+      await axios.post(
+        "https://crickpluse.onrender.com/api/contact",
+        form
+      );
 
-      alert("Message sent successfully");
+      toast.success("Message sent successfully");
 
       setForm({
         name: "",
@@ -38,7 +42,9 @@ const Contact: React.FC = () => {
       });
 
     } catch (error: any) {
-      alert(error.response?.data?.message || "Error sending message");
+      toast.error(
+        error.response?.data?.message || "Error sending message"
+      );
     } finally {
       setLoading(false);
     }
@@ -174,7 +180,7 @@ const Contact: React.FC = () => {
         </div>
 
       </div>
-      
+
       {/* Footer */}
       <div className="hidden md:block">
         <Footer />

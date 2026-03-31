@@ -36,7 +36,7 @@ const OtpVerification: React.FC = () => {
     const code = otp.join("");
 
     try {
-      await axios.post("http://localhost:5000/api/auth/verify-otp", {
+      await axios.post("https://crickpluse.onrender.com/api/auth/verify-otp", {
         email,
         otp: code,
       });

@@ -12,7 +12,7 @@ const Profile: React.FC = () => {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await axios.get("http://localhost:5000/api/auth/me", {
+        const res = await axios.get("https://crickpluse.onrender.com/api/auth/me", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
