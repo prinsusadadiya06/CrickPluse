@@ -13,8 +13,21 @@ const Archive: React.FC = () => {
   const [openYear, setOpenYear] = useState(false);
 
   const [data, setData] = useState<any>({});
-
   const [search, setSearch] = useState("");
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  // MOBILE DETECTION (SAFE FOR VERCEL)
+  useEffect(() => {
+    const checkScreen = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
 
   // FETCH META
   useEffect(() => {
@@ -26,7 +39,6 @@ const Archive: React.FC = () => {
         ]);
 
         if (Array.isArray(catRes.data)) {
-
           const ordered = ["international", "league", "domestic", "women"];
 
           const sortedCategories = ordered.filter(c =>
@@ -34,8 +46,6 @@ const Archive: React.FC = () => {
           );
 
           setCategories(sortedCategories);
-
-          // default always international
           setSelectedCategory("international");
         }
 
@@ -56,13 +66,7 @@ const Archive: React.FC = () => {
   }, []);
 
   // FETCH DATA
-  useEffect(() => {
-    if (selectedYear !== null && selectedCategory) {
-      fetchArchive();
-    }
-  }, [selectedCategory, selectedYear]);
-
-  const fetchArchive = async () => {
+  const fetchArchive = React.useCallback(async () => {
     try {
       const res = await axios.get("https://crickpluse.onrender.com/api/archive", {
         params: {
@@ -74,17 +78,23 @@ const Archive: React.FC = () => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }, [selectedYear]);
 
-  //  SECTION WITH SEARCH FILTER
+  useEffect(() => {
+    if (selectedYear !== null && selectedCategory) {
+      fetchArchive();
+    }
+  }, [selectedCategory, selectedYear, fetchArchive]);
+
+  // SECTION
   const Section = ({ title, items }: { title: string; items: any[] }) => (
     <div className="flex pb-3">
       <div className="hidden md:block w-[120px] shrink-0 font-bold text-blue-600 text-[15px] pt-4">
         {title.charAt(0).toUpperCase() + title.slice(1)}
       </div>
       <div className="flex-1">
-        {items
-          ?.filter((item) =>
+        {(items || [])
+          .filter((item) =>
             item.title.toLowerCase().includes(search.toLowerCase())
           )
           .map((item, idx) => (
@@ -108,7 +118,7 @@ const Archive: React.FC = () => {
     </div>
   );
 
-  const allYears = yearGroups.flatMap(group => group.years);
+  const allYears = yearGroups.flatMap(group => Array.isArray(group.years) ? group.years : []);
 
   return (
     <div className="bg-[#ECF0F1] md:pb-0 pb-[63px] min-h-screen">
@@ -143,7 +153,7 @@ const Archive: React.FC = () => {
         </div>
       </div>
 
-      {/* YEAR FILTER (MOBILE) */}
+      {/* YEAR FILTER */}
       <div className="md:hidden flex flex-col gap-2 ps-4 pr-2">
 
         <div className="flex justify-end relative">
@@ -152,16 +162,6 @@ const Archive: React.FC = () => {
             className="px-3 mt-2 py-2 border border-gray-300 rounded-md bg-blue-600 text-white flex items-center gap-1"
           >
             {selectedYear ?? "Year"}
-
-            <svg
-              className={`w-4 h-4 ${openYear ? "rotate-180" : ""}`}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="4"
-              viewBox="0 0 24 24"
-            >
-              <path d="M19 9l-7 7-7-7" />
-            </svg>
           </button>
 
           {openYear && (
@@ -185,7 +185,7 @@ const Archive: React.FC = () => {
           )}
         </div>
 
-        {/* SEARCH BAR */}
+        {/* SEARCH */}
         <div className="pb-3">
           <input
             type="text"
@@ -197,7 +197,7 @@ const Archive: React.FC = () => {
         </div>
       </div>
 
-      {/* MAIN CONTENT */}
+      {/* MAIN */}
       <div className="max-w-[1000px] mx-auto bg-white p-4 md:p-8">
         <div className="flex flex-col md:flex-row gap-2">
 
@@ -215,22 +215,15 @@ const Archive: React.FC = () => {
 
             <div className="space-y-3">
               {Object.keys(data)
-                .filter((key) => {
-                  // mobile only selected category
-                  if (window.innerWidth < 768) {
-                    return key === selectedCategory;
-                  }
-                  // desktop all category
-                  return true;
-                })
+                .filter((key) => (isMobile ? key === selectedCategory : true))
                 .map((key) => (
-                  <Section key={key} title={key} items={data[key]} />
+                  <Section key={key} title={key} items={data[key] || []} />
                 ))}
             </div>
 
           </div>
 
-          {/* SIDEBAR DESKTOP */}
+          {/* SIDEBAR */}
           <aside className="hidden md:block w-[280px]">
             <h2 className="text-base font-bold mb-3 border-b pb-1">
               ALL SEASONS

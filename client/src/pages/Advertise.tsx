@@ -19,14 +19,7 @@ const Advertise: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.placeholder || e.target.name]: e.target.value
-    });
-  };
+ 
 
   // Better handling using name attribute
   const handleInputChange = (
