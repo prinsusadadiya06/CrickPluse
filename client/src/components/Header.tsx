@@ -58,7 +58,7 @@ const Header: React.FC = () => {
     };
 
     if (isLoggedIn) fetchProfile();
-  }, []);
+  }, [isLoggedIn]);
 
 
 

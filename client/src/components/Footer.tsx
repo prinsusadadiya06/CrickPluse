@@ -38,10 +38,10 @@ const Footer: React.FC = () => {
           <div className="flex flex-col gap-3">
             <h3 className="font-bold text-base mb-2">FOLLOW US ON</h3>
             <div className="flex flex-col gap-4">
-              <a href="https://www.facebook.com" target="_blank" className="flex items-center gap-4 text-[14px] text-bold"><Facebook size={22} /> Facebook</a>
-              <a href="https://www.twitter.com" target="_blank" className="flex items-center gap-4 text-[14px] text-bold"><Twitter size={22} /> Twitter</a>
-              <a href="https://www.youtube.com" target="_blank" className="flex items-center gap-4 text-[14px] text-bold"><Youtube size={22} /> Youtube</a>
-              <a href="https://www.pinterest.com" target="_blank" className="flex items-center gap-4 text-[14px] text-bold">
+              <a href="https://www.facebook.com" target="_blank"  rel="noopener noreferrer" className="flex items-center gap-4 text-[14px] text-bold"><Facebook size={22}  /> Facebook</a>
+              <a href="https://www.twitter.com" target="_blank"  rel="noopener noreferrer" className="flex items-center gap-4 text-[14px] text-bold"><Twitter size={22} /> Twitter</a>
+              <a href="https://www.youtube.com" target="_blank"  rel="noopener noreferrer" className="flex items-center gap-4 text-[14px] text-bold"><Youtube size={22} /> Youtube</a>
+              <a href="https://www.pinterest.com" target="_blank"  rel="noopener noreferrer" className="flex items-center gap-4 text-[14px] text-bold">
                 <PinterestIcon size={16} /> Pinterest
               </a>
             </div>
