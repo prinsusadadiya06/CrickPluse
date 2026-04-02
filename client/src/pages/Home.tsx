@@ -155,7 +155,7 @@ const Home: React.FC = () => {
           <div
             ref={sliderRef}
             className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar pb-4 pr-6 w-full"
-            style={{ scrollSnapType: "x mandatory", scrollPaddingLeft: "16px", WebkitOverflowScrolling: "touch",overscrollBehaviorX: "contain" }}
+            style={{ scrollSnapType: "x mandatory", scrollPaddingLeft: "16px", WebkitOverflowScrolling: "touch",overscrollBehaviorX: "contain",touchAction: "pan-y" }}
           >
             {finalMatches.map((match: any) => {
               const isLive = match.status?.toLowerCase() === "live";
