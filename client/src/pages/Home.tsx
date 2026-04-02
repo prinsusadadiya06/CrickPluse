@@ -131,143 +131,138 @@ const Home: React.FC = () => {
 
       {/* MATCH SLIDER */}
      <section className="md:py-6 py-3 px-4 sm:px-6 max-w-7xl mx-auto relative overflow-hidden">
-  <h2 className="text-2xl font-bold mb-6">Matches</h2>
+        <h2 className="text-2xl font-bold mb-6">Matches</h2>
 
-  {showLeft && (
-    <button
-      onClick={scrollLeft}
-      className="hidden md:flex absolute left-4 top-1/2 -translate-y-[8%] bg-blue-600 text-white w-10 h-10 rounded-full shadow-lg z-10 items-center justify-center"
-    >
-      ❮
-    </button>
-  )}
-
-  {showRight && (
-    <button
-      onClick={scrollRight}
-      className="hidden md:flex absolute right-4 top-1/2 -translate-y-[8%] bg-blue-600 text-white w-10 h-10 rounded-full shadow-lg z-10 items-center justify-center"
-    >
-      ❯
-    </button>
-  )}
-
-  <div className="w-full overflow-hidden relative">
-    <div
-      ref={sliderRef}
-      className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar pb-4 pr-6 w-full"
-      style={{ 
-        scrollSnapType: "x mandatory", 
-        scrollPaddingLeft: "16px", 
-        WebkitOverflowScrolling: "touch",
-        // આ પ્રોપર્ટી પેજને આડું હલતું (Wobble) રોકશે
-        overscrollBehaviorX: "contain" 
-      }}
-    >
-      {finalMatches.map((match: any) => {
-        const isLive = match.status?.toLowerCase() === "live";
-        const isUpcoming = match.status?.toLowerCase() === "upcoming";
-        const isCompleted = !isLive && !isUpcoming;
-
-        const type = normalizeType(match.type, match.title);
-
-        const liveMessage = match.liveDetails || "Live";
-        const stage = match.title?.includes(",")
-          ? match.title.split(",")[1]?.trim()
-          : "";
-
-        const isIPLTeam = ["rcb", "mi", "csk", "kkr", "srh", "rr", "gt", "pbks", "dc", "lsg"];
-
-        return (
-          <Link
-            key={match._id || match.id}
-            to={`/details/match/${match.id}`}
-            className="relative flex-shrink-0 w-80 h-44 bg-white pt-8 px-5 pb-5 rounded-2xl shadow-md border flex flex-col justify-between"
-            style={{ scrollSnapAlign: "start" }}
+        {showLeft && (
+          <button
+            onClick={scrollLeft}
+            className="hidden md:flex absolute left-4 top-1/2 -translate-y-[8%] bg-blue-600 text-white w-10 h-10 rounded-full shadow-lg z-10 items-center justify-center"
           >
-            <span className="absolute top-2 left-4 text-xs text-gray-500 w-[65%] truncate mt-2">
-              {stage ? `${stage} • ${match.series}` : match.series}
-            </span>
+            ❮
+          </button>
+        )}
 
-            <span
-              className={`absolute top-4 right-4 px-1.5 py-0.5 rounded-3xl text-xs font-bold ${type === "ODI"
-                ? "bg-[#0579BC] text-white"
-                : type === "T20"
-                  ? "bg-[#424242] text-white"
-                  : type === "TEST"
-                    ? "bg-pink-500 text-white"
-                    : "bg-gray-400 text-white"
-                }`}
-            >
-              {type}
-            </span>
+        {showRight && (
+          <button
+            onClick={scrollRight}
+            className="hidden md:flex absolute right-4 top-1/2 -translate-y-[8%] bg-blue-600 text-white w-10 h-10 rounded-full shadow-lg z-10 items-center justify-center"
+          >
+            ❯
+          </button>
+        )}
 
-            <div className="flex flex-col gap-3 mt-4">
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <img
-                    src={
-                      isIPLTeam.includes(match.team1Code?.toLowerCase())
-                        ? `/team-logos/${match.team1Code.toLowerCase()}.png`
-                        : `https://flagcdn.com/w40/${match.team1Code}.png`
-                    }
-                    alt={match.team1}
-                    className="w-6 h-4 object-cover rounded-sm"
-                  />
-                  <span>{match.team1}</span>
-                </div>
+        <div className="w-full overflow-hidden relative">
+          <div
+            ref={sliderRef}
+            className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar pb-4 pr-6 w-full"
+            style={{ scrollSnapType: "x mandatory", scrollPaddingLeft: "16px", WebkitOverflowScrolling: "touch",overscrollBehaviorX: "contain",touchAction: "pan-x pan-y" }}
+          >
+            {finalMatches.map((match: any) => {
+              const isLive = match.status?.toLowerCase() === "live";
+              const isUpcoming = match.status?.toLowerCase() === "upcoming";
+              const isCompleted = !isLive && !isUpcoming;
 
-                {(isLive || isCompleted) && match.scores && (
-                  <span className="font-semibold">
-                    {match.scores.team1} ({match.overs.team1})
+              const type = normalizeType(match.type, match.title);
+
+              const liveMessage = match.liveDetails || "Live";
+              const stage = match.title?.includes(",")
+                ? match.title.split(",")[1]?.trim()
+                : "";
+
+              const isIPLTeam = ["rcb", "mi", "csk", "kkr", "srh", "rr", "gt", "pbks", "dc", "lsg"];
+
+              return (
+                <Link
+                  key={match._id || match.id}
+                  to={`/details/match/${match.id}`}
+                  className="relative flex-shrink-0  w-80 h-44 bg-white pt-8 px-5 pb-5 rounded-2xl shadow-md border flex flex-col justify-between"
+                  style={{ scrollSnapAlign: "start" }}
+                >
+                  <span className="absolute top-2 left-4 text-xs text-gray-500 w-[65%] truncate mt-2">
+                    {stage ? `${stage} • ${match.series}` : match.series}
                   </span>
-                )}
-              </div>
 
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <img
-                    src={
-                      isIPLTeam.includes(match.team2Code?.toLowerCase())
-                        ? `/team-logos/${match.team2Code.toLowerCase()}.png`
-                        : `https://flagcdn.com/w40/${match.team2Code}.png`
-                    }
-                    alt={match.team2}
-                    className="w-6 h-4 object-cover rounded-sm"
-                  />
-                  <span>{match.team2}</span>
-                </div>
-
-                {(isLive || isCompleted) && match.scores && (
-                  <span className="font-semibold">
-                    {match.scores.team2} ({match.overs.team2})
+                  <span
+                    className={`absolute top-4 right-4 px-1.5 py-0.5 rounded-3xl text-xs font-bold ${type === "ODI"
+                      ? "bg-[#0579BC] text-white"
+                      : type === "T20"
+                        ? "bg-[#424242] text-white"
+                        : type === "TEST"
+                          ? "bg-pink-500 text-white"
+                          : "bg-gray-400 text-white"
+                      }`}
+                  >
+                    {type}
                   </span>
-                )}
-              </div>
-            </div>
 
-            {isLive && (
-              <p className="text-red-600 font-semibold mt-2">
-                {liveMessage}
-              </p>
-            )}
+                  <div className="flex flex-col gap-3 mt-4">
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <img
+                          src={
+                            isIPLTeam.includes(match.team1Code?.toLowerCase())
+                              ? `/team-logos/${match.team1Code.toLowerCase()}.png`
+                              : `https://flagcdn.com/w40/${match.team1Code}.png`
+                          }
+                          alt={match.team1}
+                          className="w-6 h-4 object-cover rounded-sm"
+                        />
+                        <span>{match.team1}</span>
+                      </div>
 
-            {isCompleted && (
-              <p className="text-[#4a90e2] font-semibold mt-2">
-                {match.status}
-              </p>
-            )}
+                      {(isLive || isCompleted) && match.scores && (
+                        <span className="font-semibold">
+                          {match.scores.team1} ({match.overs.team1})
+                        </span>
+                      )}
+                    </div>
 
-            {isUpcoming && (
-              <p className="text-orange-500 font-medium mt-2">
-                {match.time || match.score}
-              </p>
-            )}
-          </Link>
-        );
-      })}
-    </div>
-  </div>
-</section>
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <img
+                          src={
+                            isIPLTeam.includes(match.team2Code?.toLowerCase())
+                              ? `/team-logos/${match.team2Code.toLowerCase()}.png`
+                              : `https://flagcdn.com/w40/${match.team2Code}.png`
+                          }
+                          alt={match.team2}
+                          className="w-6 h-4 object-cover rounded-sm"
+                        />
+                        <span>{match.team2}</span>
+                      </div>
+
+                      {(isLive || isCompleted) && match.scores && (
+                        <span className="font-semibold">
+                          {match.scores.team2} ({match.overs.team2})
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {isLive && (
+                    <p className="text-red-600 font-semibold mt-2">
+                      {liveMessage}
+                    </p>
+                  )}
+
+                  {isCompleted && (
+                    <p className="text-[#4a90e2] font-semibold mt-2">
+                      {match.status}
+                    </p>
+                  )}
+
+                  {isUpcoming && (
+                    <p className="text-orange-500 font-medium mt-2">
+                      {match.time || match.score}
+                    </p>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
+      </section>
 
       {/* NEWS */}
       <section className="py-10 px-2 sm:px-6 max-w-7xl mx-auto mb-[50px] md:mb-0">
