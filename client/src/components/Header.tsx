@@ -79,7 +79,7 @@ const Header: React.FC = () => {
   return (
     <>
       <header className="sticky top-0 z-50  bg-gradient-to-r from-blue-600 to-blue-400">
-        <div className="max-w-8xl mx-4 flex items-center justify-between h-14 relative">
+        <div className="max-w-7xl px-4 mx-auto flex items-center justify-between h-14 relative">
 
           {/* Hamburger - Mobile */}
           <button
