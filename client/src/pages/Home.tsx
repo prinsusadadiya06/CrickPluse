@@ -154,7 +154,7 @@ const Home: React.FC = () => {
         <div className="w-full overflow-hidden relative">
           <div
             ref={sliderRef}
-            className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar pb-4 pr-6 w-full"
+            className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar pb-4 pr-16 w-full"
             style={{ scrollSnapType: "x mandatory", scrollPaddingLeft: "16px", WebkitOverflowScrolling: "touch", overscrollBehaviorX: "contain", touchAction: "pan-x" }}
           >
             {finalMatches.map((match: any) => {
@@ -236,7 +236,7 @@ const Home: React.FC = () => {
                           }
                           alt={match.team2}
                           className="w-6 h-4 object-cover rounded-sm"
-                         // if .png not found then check .jpg or .jpeg 
+                          // if .png not found then check .jpg or .jpeg 
                           onError={(e) => {
                             const target = e.currentTarget;
                             if (target.src.includes('.png')) {
@@ -277,7 +277,6 @@ const Home: React.FC = () => {
                 </Link>
               );
             })}
-            <div className="flex-shrink-0 w-4 h-full"></div>
           </div>
         </div>
 
