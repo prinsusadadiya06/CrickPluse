@@ -51,7 +51,7 @@ const Teams: React.FC = () => {
           </div>
 
           <div className="overflow-x-auto">
-            <div className="flex whitespace-nowrap px-4 py-2">
+            <div className="flex whitespace-nowrap px-6 py-2">
               {categories.map((cat) => {
                 const isActive = selectedCategory === cat;
                 return (
