@@ -66,7 +66,7 @@ const Home: React.FC = () => {
   const scrollLeft = () => {
     const el = sliderRef.current;
     if (!el) return;
-    el.scrollBy({ left: -344, behavior: "smooth" }); // 320 + gap
+    el.scrollBy({ left: -344, behavior: "smooth" }); 
   };
 
   const scrollRight = () => {
@@ -76,7 +76,7 @@ const Home: React.FC = () => {
     if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 50) {
       el.scrollTo({ left: 0, behavior: "smooth" });
     } else {
-      el.scrollBy({ left: 344, behavior: "smooth" }); // FIXED
+      el.scrollBy({ left: 344, behavior: "smooth" }); 
     }
   };
 
@@ -155,7 +155,7 @@ const Home: React.FC = () => {
           <div
             ref={sliderRef}
             className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar pb-4 pr-6 w-full"
-            style={{ scrollSnapType: "x mandatory", scrollPaddingLeft: "16px", WebkitOverflowScrolling: "touch",overscrollBehaviorX: "contain",touchAction: "pan-x pan-y" }}
+            style={{ scrollSnapType: "x mandatory", scrollPaddingLeft: "16px", WebkitOverflowScrolling: "touch",overscrollBehaviorX: "contain",touchAction: "pan-x" }}
           >
             {finalMatches.map((match: any) => {
               const isLive = match.status?.toLowerCase() === "live";
@@ -175,7 +175,7 @@ const Home: React.FC = () => {
                 <Link
                   key={match._id || match.id}
                   to={`/details/match/${match.id}`}
-                  className="relative flex-shrink-0  w-80 h-44 bg-white pt-8 px-5 pb-5 rounded-2xl shadow-md border flex flex-col justify-between"
+                  className="relative flex-shrink-0  w-[80vw] md:w-80 h-44 bg-white pt-8 px-5 pb-5 rounded-2xl shadow-md border flex flex-col justify-between"
                   style={{ scrollSnapAlign: "start" }}
                 >
                   <span className="absolute top-2 left-4 text-xs text-gray-500 w-[65%] truncate mt-2">

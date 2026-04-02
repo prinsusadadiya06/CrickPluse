@@ -15,7 +15,7 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
- touch-action: auto;
+  touch-action: pan-x;
 }
 
 /* sucess button animation */
