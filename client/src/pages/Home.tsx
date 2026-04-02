@@ -130,7 +130,7 @@ const Home: React.FC = () => {
       <Header />
 
       {/* MATCH SLIDER */}
-      <section className="md:py-6 py-3 px-4 sm:px-6 max-w-7xl mx-auto relative overflow-hidden">
+      <section className="md:py-6 py-3 px-4 sm:px-6 max-w-7xl mx-auto relative overflow-hidden touch-pan-y">
         <h2 className="text-2xl font-bold mb-6">Matches</h2>
 
         {showLeft && (
@@ -151,11 +151,11 @@ const Home: React.FC = () => {
           </button>
         )}
 
-        <div className="w-full overflow-hidden">
+        <div className="w-full overflow-hidden relative">
           <div
             ref={sliderRef}
-            className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar pb-4 pr-6 w-full"
-            style={{ scrollSnapType: "x mandatory", scrollPaddingLeft: "16px" }}
+            className="flex gap-6 snap-start overflow-x-auto scroll-smooth no-scrollbar pb-4 pr-6 w-full"
+            style={{ scrollSnapType: "x mandatory", scrollPaddingLeft: "16px", WebkitOverflowScrolling: "touch" }}
           >
             {finalMatches.map((match: any) => {
               const isLive = match.status?.toLowerCase() === "live";
