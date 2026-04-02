@@ -103,8 +103,8 @@ const Schedule: React.FC = () => {
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-5 py-2 rounded-full font-semibold text-sm transition-all ${isActive
-                    ? "bg-indigo-600 text-white"
-                    : "bg-indigo-100 text-gray-700"
+                  ? "bg-indigo-600 text-white"
+                  : "bg-indigo-100 text-gray-700"
                   }`}
               >
                 {cat}
@@ -150,20 +150,52 @@ const Schedule: React.FC = () => {
                             {m.title}
                           </div>
 
+                          {/*team 1 */}
                           <div className="flex items-center gap-3 py-1">
                             <img
                               src={`https://flagcdn.com/w40/${m.team1Code}.png`}
                               alt={m.team1}
-                              className="w-6 h-4"
+                              className="w-6 h-4 object-cover"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+
+                                if (target.src.includes("flagcdn")) {
+                                  // flag fail → try local PNG
+                                  target.src = `/team-logos/${m.team1Code}.png`;
+                                } else if (target.src.includes(".png")) {
+                                  // PNG fail → try JPG
+                                  target.src = `/team-logos/${m.team1Code}.jpg`;
+                                } else if (target.src.includes(".jpg")) {
+                                  // JPG fail → try JPEG
+                                  target.src = `/team-logos/${m.team1Code}.jpeg`;
+                                } else {
+                                  // final fallback
+                                  target.src = "/team-logos/default.png";
+                                }
+                              }}
                             />
                             <span>{m.team1}</span>
                           </div>
 
+                          {/*team 2 */}
                           <div className="flex items-center gap-3 py-1">
                             <img
                               src={`https://flagcdn.com/w40/${m.team2Code}.png`}
                               alt={m.team2}
-                              className="w-6 h-4"
+                              className="w-6 h-4 object-cover"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+
+                                if (target.src.includes("flagcdn")) {
+                                  target.src = `/team-logos/${m.team2Code}.png`;
+                                } else if (target.src.includes(".png")) {
+                                  target.src = `/team-logos/${m.team2Code}.jpg`;
+                                } else if (target.src.includes(".jpg")) {
+                                  target.src = `/team-logos/${m.team2Code}.jpeg`;
+                                } else {
+                                  target.src = "/team-logos/default.png";
+                                }
+                              }}
                             />
                             <span>{m.team2}</span>
                           </div>

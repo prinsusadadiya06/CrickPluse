@@ -74,7 +74,17 @@ const Header: React.FC = () => {
 
   // Prevent scrolling when mobile menu open
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "auto";
+    if (mobileOpen) {
+      // lock scroll
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+    } else {
+      // unlock scroll
+      document.body.style.overflow = "auto";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    }
   }, [mobileOpen]);
 
   return (
