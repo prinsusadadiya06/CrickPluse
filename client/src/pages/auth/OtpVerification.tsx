@@ -11,6 +11,9 @@ const OtpVerification: React.FC = () => {
   const location = useLocation();
   const email = location.state?.email;
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [isResending, setIsResending] = useState(false);
+
   const navigate = useNavigate();
   const [otp, setOtp] = useState<string[]>(["", "", "", ""]);
 
@@ -36,6 +39,8 @@ const OtpVerification: React.FC = () => {
     const code = otp.join("");
 
     try {
+      setIsLoading(true);
+
       await axios.post("https://crickpluse.onrender.com/api/auth/verify-otp", {
         email,
         otp: code,
@@ -47,6 +52,8 @@ const OtpVerification: React.FC = () => {
 
     } catch (err: any) {
       toast.error(err.response?.data?.message || "Invalid OTP");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -54,9 +61,11 @@ const OtpVerification: React.FC = () => {
 
   const handleResend = async () => {
     try {
+      setIsResending(true);
+
       const id = toast.loading("Resending OTP...");
 
-      await axios.post("http://localhost:5000/api/auth/forgot-password", {
+      await axios.post("https://crickpluse.onrender.com/api/auth/forgot-password", {
         email: location.state?.email,
       });
 
@@ -64,6 +73,8 @@ const OtpVerification: React.FC = () => {
 
     } catch (err: any) {
       toast.error(err.response?.data?.message || "Error resending OTP");
+    } finally {
+      setIsResending(false);
     }
   };
 
@@ -112,9 +123,17 @@ const OtpVerification: React.FC = () => {
           {/* Verify Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 active:scale-95 text-white py-2.5 rounded-lg font-semibold transition"
+            disabled={isLoading}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed active:scale-95 text-white py-2.5 rounded-lg font-semibold transition flex items-center justify-center"
           >
-            Verify OTP
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                Verifying...
+              </span>
+            ) : (
+              "Verify OTP"
+            )}
           </button>
 
         </form>
@@ -125,9 +144,10 @@ const OtpVerification: React.FC = () => {
           <button
             type="button"
             onClick={handleResend}
-            className="text-blue-600 ml-1 font-medium underline"
+            disabled={isResending}
+            className="text-blue-600 ml-1 font-medium underline disabled:text-gray-400 disabled:cursor-not-allowed"
           >
-            Resend OTP
+            {isResending ? "Resending..." : "Resend OTP"}
           </button>
         </p>
 

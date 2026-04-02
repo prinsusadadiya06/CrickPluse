@@ -7,6 +7,7 @@ import { toast } from "sonner";
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   // Validate email format
@@ -31,6 +32,8 @@ const ForgotPassword: React.FC = () => {
     }
 
     try {
+      setIsLoading(true);
+
       const id = toast.loading("Sending OTP...");
 
       await axios.post("https://crickpluse.onrender.com/api/auth/forgot-password", {
@@ -43,6 +46,8 @@ const ForgotPassword: React.FC = () => {
 
     } catch (err: any) {
       toast.error(err.response?.data?.message || "Error sending OTP");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -80,10 +85,17 @@ const ForgotPassword: React.FC = () => {
           {/* Send OTP */}
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 active:scale-95 text-white py-2.5 rounded-lg font-semibold transition"
-            aria-label="Send OTP"
+            disabled={isLoading}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed active:scale-95 text-white py-2.5 rounded-lg font-semibold transition flex items-center justify-center"
           >
-            Send OTP
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                Sending...
+              </span>
+            ) : (
+              "Send OTP"
+            )}
           </button>
         </form>
 

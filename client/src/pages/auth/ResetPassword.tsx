@@ -3,13 +3,14 @@ import { Lock, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-
+import { toast } from "sonner";
 
 const ResetPassword: React.FC = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const location = useLocation();
@@ -32,15 +33,20 @@ const ResetPassword: React.FC = () => {
     }
 
     try {
+      setIsLoading(true);
       await axios.post("https://crickpluse.onrender.com/api/auth/reset-password", {
         email,
         newPassword,
       });
 
+      toast.success("Password reset successful");
+
       navigate("/reset-success");
 
     } catch (err: any) {
-      alert(err.response?.data?.message || "Reset failed");
+      toast.error(err.response?.data?.message || "Reset failed");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -109,10 +115,17 @@ const ResetPassword: React.FC = () => {
           {/* Reset Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 active:scale-95 text-white py-2.5 rounded-lg font-semibold transition"
-            aria-label="Reset Password"
+            disabled={isLoading}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed active:scale-95 text-white py-2.5 rounded-lg font-semibold transition flex items-center justify-center"
           >
-            Reset Password
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                Resetting...
+              </span>
+            ) : (
+              "Reset Password"
+            )}
           </button>
         </form>
 
