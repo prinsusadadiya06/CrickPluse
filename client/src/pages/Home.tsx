@@ -130,7 +130,7 @@ const Home: React.FC = () => {
       <Header />
 
       {/* MATCH SLIDER */}
-      <section className="md:py-6 py-3 px-4 sm:px-6 max-w-7xl mx-auto relative overflow-hidden touch-pan-y">
+     <section className="md:py-6 py-3 px-4 sm:px-6 max-w-7xl mx-auto relative overflow-hidden">
         <h2 className="text-2xl font-bold mb-6">Matches</h2>
 
         {showLeft && (
@@ -154,8 +154,8 @@ const Home: React.FC = () => {
         <div className="w-full overflow-hidden relative">
           <div
             ref={sliderRef}
-            className="flex gap-6 snap-start overflow-x-auto scroll-smooth no-scrollbar pb-4 pr-6 w-full"
-            style={{ scrollSnapType: "x mandatory", scrollPaddingLeft: "16px", WebkitOverflowScrolling: "touch" }}
+            className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar pb-4 pr-6 w-full"
+            style={{ scrollSnapType: "x mandatory", scrollPaddingLeft: "16px", WebkitOverflowScrolling: "touch",overscrollBehaviorX: "contain" }}
           >
             {finalMatches.map((match: any) => {
               const isLive = match.status?.toLowerCase() === "live";
@@ -175,7 +175,7 @@ const Home: React.FC = () => {
                 <Link
                   key={match._id || match.id}
                   to={`/details/match/${match.id}`}
-                  className="relative flex-shrink-0 w-80 h-44 bg-white pt-8 px-5 pb-5 rounded-2xl shadow-md border flex flex-col justify-between"
+                  className="relative flex-shrink-0 snap-start w-80 h-44 bg-white pt-8 px-5 pb-5 rounded-2xl shadow-md border flex flex-col justify-between"
                   style={{ scrollSnapAlign: "start" }}
                 >
                   <span className="absolute top-2 left-4 text-xs text-gray-500 w-[65%] truncate mt-2">
