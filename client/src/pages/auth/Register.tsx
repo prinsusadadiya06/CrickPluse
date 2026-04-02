@@ -10,6 +10,7 @@ const Register: React.FC = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string }>({});
 
     // Basic form validation
@@ -30,6 +31,8 @@ const Register: React.FC = () => {
 
         if (validateForm()) {
             try {
+                setIsLoading(true);
+
                 await axios.post("https://crickpluse.onrender.com/api/auth/register", {
                     name,
                     email,
@@ -44,6 +47,8 @@ const Register: React.FC = () => {
 
             } catch (err: any) {
                 toast.error(err.response?.data?.message || "Register failed");
+            } finally {
+                setIsLoading(false);
             }
         }
     };
@@ -114,9 +119,17 @@ const Register: React.FC = () => {
                     {/* Register Button */}
                     <button
                         type="submit"
-                        className="w-full bg-blue-600 hover:bg-blue-700 active:scale-95 text-white py-2.5 rounded-lg font-semibold transition"
+                        disabled={isLoading}
+                        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed active:scale-95 text-white py-2.5 rounded-lg font-semibold transition flex items-center justify-center"
                     >
-                        Create Account
+                        {isLoading ? (
+                            <span className="flex items-center gap-2">
+                                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                Creating...
+                            </span>
+                        ) : (
+                            "Create Account"
+                        )}
                     </button>
                 </form>
 

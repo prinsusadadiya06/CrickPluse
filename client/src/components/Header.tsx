@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
+import { LogOut } from "lucide-react";
 
 import {
   Home,
@@ -166,12 +167,14 @@ const Header: React.FC = () => {
                       setProfileOpen(false);
                       navigate("/profile");
                     }}
-                    className="px-4 py-2 border-b text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
+                    className="flex items-center gap-2 px-4 py-2 border-b text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
                   >
-                    <p className="font-semibold">{profile?.name || "My Profile"}</p>
-                    <p className="text-xs text-gray-400">{profile?.email}</p>
+                    <User size={16} />
+                    <div>
+                      <p className="font-semibold">{profile?.name || "My Profile"}</p>
+                      <p className="text-xs text-gray-400">{profile?.email}</p>
+                    </div>
                   </div>
-
                   <button
                     onClick={() => {
                       localStorage.removeItem("token");
@@ -183,8 +186,9 @@ const Header: React.FC = () => {
 
                       navigate("/login");
                     }}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100 text-red-500"
+                    className="w-full flex items-center gap-2 text-left px-4 py-2 hover:bg-gray-100 text-red-500"
                   >
+                    <LogOut size={16} />
                     Logout
                   </button>
                 </div>

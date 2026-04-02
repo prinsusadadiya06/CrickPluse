@@ -9,6 +9,7 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
 
   // Basic form validation
@@ -28,6 +29,8 @@ const Login: React.FC = () => {
 
     if (validateForm()) {
       try {
+        setIsLoading(true);
+
         const { data } = await axios.post(
           "https://crickpluse.onrender.com/api/auth/login",
           {
@@ -46,6 +49,8 @@ const Login: React.FC = () => {
 
       } catch (err: any) {
         toast.error(err.response?.data?.message || "Login failed");
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -109,9 +114,17 @@ const Login: React.FC = () => {
           {/* Login Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 active:scale-95 text-white py-2.5 rounded-lg font-semibold transition"
+            disabled={isLoading}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed active:scale-95 text-white py-2.5 rounded-lg font-semibold transition flex items-center justify-center"
           >
-            Login
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                Logging in...
+              </span>
+            ) : (
+              "Login"
+            )}
           </button>
         </form>
 
