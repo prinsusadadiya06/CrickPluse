@@ -126,7 +126,7 @@ const Home: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col md:pb-0 pb-[50px] bg-gray-100 md:bg-gray-50">
+    <div className="min-h-screen w-full overflow-x-hidden flex flex-col md:pb-0 pb-[50px] bg-gray-100 md:bg-gray-50">
       <Header />
 
       {/* MATCH SLIDER */}
