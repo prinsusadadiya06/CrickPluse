@@ -66,7 +66,7 @@ const Home: React.FC = () => {
   const scrollLeft = () => {
     const el = sliderRef.current;
     if (!el) return;
-    el.scrollBy({ left: -344, behavior: "smooth" }); 
+    el.scrollBy({ left: -el.clientWidth, behavior: "smooth" }); 
   };
 
   const scrollRight = () => {
@@ -76,7 +76,7 @@ const Home: React.FC = () => {
     if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 50) {
       el.scrollTo({ left: 0, behavior: "smooth" });
     } else {
-      el.scrollBy({ left: 344, behavior: "smooth" }); 
+      el.scrollBy({ left:el.clientWidth, behavior: "smooth" }); 
     }
   };
 
