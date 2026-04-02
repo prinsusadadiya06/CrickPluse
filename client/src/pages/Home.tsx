@@ -66,17 +66,17 @@ const Home: React.FC = () => {
   const scrollLeft = () => {
     const el = sliderRef.current;
     if (!el) return;
-    el.scrollBy({ left: -320, behavior: "smooth" });
+    el.scrollBy({ left: -344, behavior: "smooth" }); // 320 + gap
   };
 
   const scrollRight = () => {
     const el = sliderRef.current;
     if (!el) return;
 
-    if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 5) {
+    if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 50) {
       el.scrollTo({ left: 0, behavior: "smooth" });
     } else {
-      el.scrollBy({ left: 320, behavior: "smooth" });
+      el.scrollBy({ left: 344, behavior: "smooth" }); // FIXED
     }
   };
 
@@ -136,7 +136,7 @@ const Home: React.FC = () => {
         {showLeft && (
           <button
             onClick={scrollLeft}
-            className="absolute left-4 top-1/2 -translate-y-[8%] bg-blue-600 text-white w-10 h-10 rounded-full shadow-lg z-10 flex items-center justify-center"
+            className="hidden md:flex absolute left-4 top-1/2 -translate-y-[8%] bg-blue-600 text-white w-10 h-10 rounded-full shadow-lg z-10 items-center justify-center"
           >
             ❮
           </button>
@@ -145,7 +145,7 @@ const Home: React.FC = () => {
         {showRight && (
           <button
             onClick={scrollRight}
-            className="absolute right-4 top-1/2 -translate-y-[8%] bg-blue-600 text-white w-10 h-10 rounded-full shadow-lg z-10 flex items-center justify-center"
+            className="hidden md:flex absolute right-4 top-1/2 -translate-y-[8%] bg-blue-600 text-white w-10 h-10 rounded-full shadow-lg z-10 items-center justify-center"
           >
             ❯
           </button>
@@ -154,8 +154,8 @@ const Home: React.FC = () => {
         <div className="w-full overflow-hidden">
           <div
             ref={sliderRef}
-            className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar pb-4 w-full"
-            style={{ scrollSnapType: "x mandatory" }}
+            className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar pb-4 pr-6 w-full"
+            style={{ scrollSnapType: "x mandatory", scrollPaddingLeft: "16px" }}
           >
             {finalMatches.map((match: any) => {
               const isLive = match.status?.toLowerCase() === "live";
