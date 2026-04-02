@@ -66,7 +66,7 @@ const Home: React.FC = () => {
   const scrollLeft = () => {
     const el = sliderRef.current;
     if (!el) return;
-    el.scrollBy({ left: -el.clientWidth, behavior: "smooth" }); 
+    el.scrollBy({ left: -344, behavior: "smooth" });
   };
 
   const scrollRight = () => {
@@ -76,7 +76,7 @@ const Home: React.FC = () => {
     if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 50) {
       el.scrollTo({ left: 0, behavior: "smooth" });
     } else {
-      el.scrollBy({ left:el.clientWidth, behavior: "smooth" }); 
+      el.scrollBy({ left: 344, behavior: "smooth" });
     }
   };
 
@@ -122,7 +122,7 @@ const Home: React.FC = () => {
   const finalMatches = [
     ...testMatches.slice(0, 2),
     ...odiMatches.slice(0, 2),
-    ...t20Matches.slice(0, 2),
+    ...t20Matches.slice(0, 4),
   ];
 
   return (
@@ -130,7 +130,7 @@ const Home: React.FC = () => {
       <Header />
 
       {/* MATCH SLIDER */}
-     <section className="md:py-6 py-3 px-4 sm:px-6 max-w-7xl mx-auto relative overflow-hidden">
+      <section className="md:py-6 py-3 px-4 sm:px-6 max-w-7xl mx-auto relative overflow-hidden">
         <h2 className="text-2xl font-bold mb-6">Matches</h2>
 
         {showLeft && (
@@ -155,7 +155,7 @@ const Home: React.FC = () => {
           <div
             ref={sliderRef}
             className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar pb-4 pr-6 w-full"
-            style={{ scrollSnapType: "x mandatory", scrollPaddingLeft: "16px", WebkitOverflowScrolling: "touch",overscrollBehaviorX: "contain",touchAction: "pan-x" }}
+            style={{ scrollSnapType: "x mandatory", scrollPaddingLeft: "16px", WebkitOverflowScrolling: "touch", overscrollBehaviorX: "contain", touchAction: "pan-x" }}
           >
             {finalMatches.map((match: any) => {
               const isLive = match.status?.toLowerCase() === "live";
@@ -201,11 +201,20 @@ const Home: React.FC = () => {
                         <img
                           src={
                             isIPLTeam.includes(match.team1Code?.toLowerCase())
-                              ? `/team-logos/${match.team1Code.toLowerCase()}.png`
-                              : `https://flagcdn.com/w40/${match.team1Code}.png`
+                              ? `/team-logos/${match.team1Code.toLowerCase()}.png` //check png
+                              : `https://flagcdn.com/w40/${match.team1Code?.toLowerCase()}.png`
                           }
                           alt={match.team1}
                           className="w-6 h-4 object-cover rounded-sm"
+                          // if .png not found then check .jpg or .jpeg
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            if (target.src.includes('.png')) {
+                              target.src = target.src.replace('.png', '.jpg');
+                            } else if (target.src.includes('.jpg')) {
+                              target.src = target.src.replace('.jpg', '.jpeg');
+                            }
+                          }}
                         />
                         <span>{match.team1}</span>
                       </div>
@@ -222,11 +231,20 @@ const Home: React.FC = () => {
                         <img
                           src={
                             isIPLTeam.includes(match.team2Code?.toLowerCase())
-                              ? `/team-logos/${match.team2Code.toLowerCase()}.png`
-                              : `https://flagcdn.com/w40/${match.team2Code}.png`
+                              ? `/team-logos/${match.team2Code.toLowerCase()}.png` //check png
+                              : `https://flagcdn.com/w40/${match.team2Code?.toLowerCase()}.png`
                           }
                           alt={match.team2}
                           className="w-6 h-4 object-cover rounded-sm"
+                         // if .png not found then check .jpg or .jpeg 
+                          onError={(e) => {
+                            const target = e.currentTarget;
+                            if (target.src.includes('.png')) {
+                              target.src = target.src.replace('.png', '.jpg');
+                            } else if (target.src.includes('.jpg')) {
+                              target.src = target.src.replace('.jpg', '.jpeg');
+                            }
+                          }}
                         />
                         <span>{match.team2}</span>
                       </div>
@@ -259,6 +277,7 @@ const Home: React.FC = () => {
                 </Link>
               );
             })}
+            <div className="flex-shrink-0 w-4 h-full"></div>
           </div>
         </div>
 
