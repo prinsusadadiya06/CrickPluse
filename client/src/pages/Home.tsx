@@ -144,7 +144,7 @@ const Home: React.FC = () => {
             <div className="w-full overflow-hidden relative">
               <div
                 ref={sliderRef}
-                className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar pb-4 pr-[835px] md:pr-10 w-full"
+                className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar pb-4 pr-[830px] md:pr-10 w-full"
                 style={{ scrollSnapType: "x mandatory", scrollPaddingLeft: "16px", WebkitOverflowScrolling: "touch", overscrollBehaviorX: "contain", touchAction: "pan-x" }}
               >
                 {finalMatches.map((match: any) => {
