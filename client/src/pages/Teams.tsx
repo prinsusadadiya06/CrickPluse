@@ -21,10 +21,6 @@ const Teams: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState("International");
   const [loading, setLoading] = useState(false);
 
-  const isIPLTeam = [
-    "rcb", "mi", "csk", "kkr", "srh",
-    "rr", "gt", "pbks", "dc", "lsg"
-  ];
 
   const categories = ["International", "Domestic", "League", "Women"];
 
