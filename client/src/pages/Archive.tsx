@@ -7,6 +7,7 @@ const Archive: React.FC = () => {
 
   const [selectedCategory, setSelectedCategory] = useState("international");
   const [categories, setCategories] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [yearGroups, setYearGroups] = useState<any[]>([]);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
@@ -33,6 +34,8 @@ const Archive: React.FC = () => {
   useEffect(() => {
     const fetchMeta = async () => {
       try {
+        setLoading(true);
+
         const [catRes, yearRes] = await Promise.all([
           axios.get("https://crickpluse.onrender.com/api/archive/categories"),
           axios.get("https://crickpluse.onrender.com/api/archive/years")
@@ -59,6 +62,8 @@ const Archive: React.FC = () => {
 
       } catch (err) {
         console.log(err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -68,15 +73,17 @@ const Archive: React.FC = () => {
   // FETCH DATA
   const fetchArchive = React.useCallback(async () => {
     try {
+      setLoading(true);
+
       const res = await axios.get("https://crickpluse.onrender.com/api/archive", {
-        params: {
-          year: selectedYear,
-        }
+        params: { year: selectedYear }
       });
 
       setData(res.data || {});
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   }, [selectedYear]);
 
@@ -122,141 +129,159 @@ const Archive: React.FC = () => {
 
   return (
     <div className="bg-[#ECF0F1] md:pb-0 pb-[63px] min-h-screen">
-      <Header />
 
-      {/* MOBILE CATEGORY */}
-      <div className="md:hidden bg-gradient-to-r from-blue-600 to-blue-400 text-white">
-        <div className="px-4 pt-4 pb-2">
-          <h1 className="text-lg font-bold">Cricket Match Archives</h1>
-        </div>
+      {/* Hide Header while loading */}
+      {!loading && <Header />}
 
-        <div className="overflow-x-auto">
-          <div className="flex whitespace-nowrap px-6 py-2">
-            {categories.map((cat) => {
-              const isActive = selectedCategory === cat;
+      {loading ? (
+        // FULL SCREEN LOADER
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
+          <div className="flex flex-col items-center">
+            <div className="w-6 h-6 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
 
-              return (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-3 py-2 mr-2 text-sm font-semibold relative ${isActive ? "text-white" : "text-green-200"
-                    }`}
-                >
-                  {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-0 w-full h-[3px] bg-white"></span>
-                  )}
-                </button>
-              );
-            })}
+            <p className="mt-2 text-sm text-blue-600 text-center">
+              Loading Archives...
+            </p>
           </div>
         </div>
-      </div>
-
-      {/* YEAR FILTER */}
-      <div className="md:hidden flex flex-col gap-2 ps-4 pr-2">
-
-        <div className="flex justify-end relative">
-          <button
-            onClick={() => setOpenYear(!openYear)}
-            className="px-3 mt-2 py-2 border border-gray-300 rounded-md bg-blue-600 text-white flex items-center gap-1"
-          >
-            {selectedYear ?? "Year"}
-          </button>
-
-          {openYear && (
-            <div className="absolute right-0 top-14 text-center py-3 px-4 w-24 bg-white border rounded-md shadow-xl max-h-56 overflow-y-auto z-50">
-              {allYears.map((year: number) => (
-                <div
-                  key={year}
-                  onClick={() => {
-                    setSelectedYear(year);
-                    setOpenYear(false);
-                  }}
-                  className={`py-1 cursor-pointer ${year === selectedYear
-                    ? "bg-blue-600 text-white"
-                    : "hover:bg-gray-200"
-                    }`}
-                >
-                  {year}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* SEARCH */}
-        <div className="pb-3">
-          <input
-            type="text"
-            placeholder="Search series..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-      </div>
-
-      {/* MAIN */}
-      <div className="max-w-[1000px] mx-auto bg-white p-4 md:p-8">
-        <div className="flex flex-col md:flex-row gap-2">
-
-          <div className="flex-1 md:border-r pr-4">
-
-            <header className="hidden md:block mb-1">
-              <h1 className="text-[22px] font-bold mb-1">
-                Cricket Match Archives
-              </h1>
-              <h2 className="text-[20px] font-bold mt-3">
-                {selectedYear}
-              </h2>
-              <div className="border-t mt-2"></div>
-            </header>
-
-            <div className="space-y-3">
-              {Object.keys(data)
-                .filter((key) => (isMobile ? key === selectedCategory : true))
-                .map((key) => (
-                  <Section key={key} title={key} items={data[key] || []} />
-                ))}
+      ) : (
+        <>
+          {/* MOBILE CATEGORY */}
+          <div className="md:hidden bg-gradient-to-r from-blue-600 to-blue-400 text-white">
+            <div className="px-4 pt-4 pb-2">
+              <h1 className="text-lg font-bold">Cricket Match Archives</h1>
             </div>
 
-          </div>
+            <div className="overflow-x-auto">
+              <div className="flex whitespace-nowrap px-6 py-2">
+                {categories.map((cat) => {
+                  const isActive = selectedCategory === cat;
 
-          {/* SIDEBAR */}
-          <aside className="hidden md:block w-[280px]">
-            <h2 className="text-base font-bold mb-3 border-b pb-1">
-              ALL SEASONS
-            </h2>
-
-            {yearGroups.map(group => (
-              <div key={group._id}>
-                <h3 className="mb-2 text-sm font-bold">{group.range}</h3>
-
-                <div className="grid grid-cols-5 gap-2 mb-4">
-                  {group.years.map((year: number) => (
+                  return (
                     <button
+                      key={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`px-3 py-2 mr-2 text-sm font-semibold relative ${isActive ? "text-white" : "text-green-200"
+                        }`}
+                    >
+                      {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                      {isActive && (
+                        <span className="absolute bottom-0 left-0 w-full h-[3px] bg-white"></span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* YEAR FILTER */}
+          <div className="md:hidden flex flex-col gap-2 ps-4 pr-2">
+
+            <div className="flex justify-end relative">
+              <button
+                onClick={() => setOpenYear(!openYear)}
+                className="px-3 mt-2 py-2 border border-gray-300 rounded-md bg-blue-600 text-white"
+              >
+                {selectedYear ?? "Year"}
+              </button>
+
+              {openYear && (
+                <div className="absolute right-0 top-14 text-center py-3 px-4 w-24 bg-white border rounded-md shadow-xl max-h-56 overflow-y-auto z-50">
+                  {allYears.map((year: number) => (
+                    <div
                       key={year}
-                      onClick={() => setSelectedYear(year)}
-                      className={`p-2 text-xs ${year === selectedYear
-                        ? "bg-black text-white"
-                        : "bg-gray-100 hover:bg-gray-300"
+                      onClick={() => {
+                        setSelectedYear(year);
+                        setOpenYear(false);
+                      }}
+                      className={`py-1 cursor-pointer ${year === selectedYear
+                        ? "bg-blue-600 text-white"
+                        : "hover:bg-gray-200"
                         }`}
                     >
                       {year}
-                    </button>
+                    </div>
                   ))}
                 </div>
+              )}
+            </div>
+
+            {/* SEARCH */}
+            <div className="pb-3">
+              <input
+                type="text"
+                placeholder="Search series..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+
+          {/* MAIN */}
+          <div className="max-w-[1000px] mx-auto bg-white p-4 md:p-8">
+            <div className="flex flex-col md:flex-row gap-2">
+
+              <div className="flex-1 md:border-r pr-4">
+
+                <header className="hidden md:block mb-1">
+                  <h1 className="text-[22px] font-bold mb-1">
+                    Cricket Match Archives
+                  </h1>
+                  <h2 className="text-[20px] font-bold mt-3">
+                    {selectedYear}
+                  </h2>
+                  <div className="border-t mt-2"></div>
+                </header>
+
+                <div className="space-y-3">
+                  {Object.keys(data)
+                    .filter((key) => (isMobile ? key === selectedCategory : true))
+                    .map((key) => (
+                      <Section key={key} title={key} items={data[key] || []} />
+                    ))}
+                </div>
+
               </div>
-            ))}
-          </aside>
 
-        </div>
-      </div>
+              {/* SIDEBAR */}
+              <aside className="hidden md:block w-[280px]">
+                <h2 className="text-base font-bold mb-3 border-b pb-1">
+                  ALL SEASONS
+                </h2>
 
-      <div className="hidden md:block">
-        <Footer />
-      </div>
+                {yearGroups.map(group => (
+                  <div key={group._id}>
+                    <h3 className="mb-2 text-sm font-bold">{group.range}</h3>
+
+                    <div className="grid grid-cols-5 gap-2 mb-4">
+                      {group.years.map((year: number) => (
+                        <button
+                          key={year}
+                          onClick={() => setSelectedYear(year)}
+                          className={`p-2 text-xs ${year === selectedYear
+                            ? "bg-black text-white"
+                            : "bg-gray-100 hover:bg-gray-300"
+                            }`}
+                        >
+                          {year}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </aside>
+
+            </div>
+          </div>
+
+          {/* FOOTER */}
+          <div className="hidden md:block">
+            <Footer />
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -5,18 +5,7 @@ import { toast } from "sonner";
 import { LogOut } from "lucide-react";
 
 import {
-  Home,
-  Calendar,
-  Users,
-  Briefcase,
-  Crown,
-  ChevronDown,
-  Menu,
-  Megaphone,
-  User,
-  Archive,
-  Video, FileText,
-  Layers
+  Home, Calendar, Users, Briefcase, Crown, ChevronDown, Menu, Megaphone, User, Archive, Video, FileText, Layers
 } from "lucide-react";
 
 // Navigation Links
@@ -67,7 +56,6 @@ const Header: React.FC = () => {
   const profileRef = useRef<HTMLDivElement>(null);
 
   const [mobileOpen, setMobileOpen] = useState(false);
-  // const [moreOpen, setMoreOpen] = useState(false);
   const navigate = useNavigate();
   const moreRef = useRef<HTMLDivElement>(null);
 
@@ -250,16 +238,6 @@ const Header: React.FC = () => {
               {/* Spacer */}
               <div className="h-6 bg-gray-100"></div>
 
-              {/* Main Navigation */}
-              {/* <NavLink
-                to="/"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 border-b hover:bg-gray-50 transition"
-              >
-                <Home size={18} />
-                Home
-              </NavLink> */}
-
               <NavLink
                 to="/schedule"
                 onClick={() => setMobileOpen(false)}
@@ -416,8 +394,6 @@ const Header: React.FC = () => {
         </NavLink>
 
       </div>
-
-
     </>
   );
 };

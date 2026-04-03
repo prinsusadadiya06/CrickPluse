@@ -18,6 +18,7 @@ const Videos: React.FC = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
+        setLoading(true);
         const res = await axios.get("https://crickpluse.onrender.com/api/videos");
         setVideos(res.data);
       } catch (err) {
@@ -30,65 +31,74 @@ const Videos: React.FC = () => {
     fetchVideos();
   }, []);
 
-  if (loading) {
-    return (
-      <>
-        <Header />
-        <p className="text-center py-10">Loading videos...</p>
-      </>
-    );
-  }
-
   return (
     <div className="min-h-screen flex flex-col md:pb-0 pb-20 bg-gray-100 md:bg-gray-50">
-
-      {/* Header */}
       <Header />
 
-      {/* Main Content */}
-      <section className="md:py-10 py-3 px-2 sm:px-6 max-w-7xl mx-auto flex-1">
-        <h2 className="md:text-2xl text-lg font-bold md:mb-8 mb-4  text-blue-700 border-l-4 border-blue-500 pl-3">
-          All Cricket Videos
-        </h2>
+      <main className="flex-1 flex flex-col">
+        {loading ? (
+          // FULL SCREEN LOADER
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
+            <div className="flex flex-col items-center">
+              <div className="w-6 h-6 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {videos.map((video) => (
-            <a
-              key={video._id || video.id}
-              href={video.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group bg-white rounded-xl shadow overflow-hidden flex flex-col hover:shadow-lg transition"
-            >
-              <div className="h-56 relative">
-                <img
-                  src={video.image}
-                  alt={video.title}
-                  className="w-full h-full object-cover"
-                />
+              <p className="mt-2 text-sm text-blue-600 text-center">
+                Loading Videos...
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="flex-1 flex flex-col items-center">
+            <section className="md:py-10 py-3 px-2 sm:px-6 max-w-7xl w-full mx-auto">
+              <h2 className="md:text-2xl text-lg font-bold md:mb-8 mb-4 text-blue-700 border-l-4 border-blue-500 pl-3">
+                All Cricket Videos
+              </h2>
 
-                {/* Play icon overlay */}
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="white"
-                    className="w-10 h-10 bg-gray-800 rounded-full p-2"
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {videos.map((video) => (
+                  <a
+                    key={video._id || video.id}
+                    href={video.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group bg-white rounded-xl shadow overflow-hidden flex flex-col hover:shadow-lg transition"
                   >
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
+                    <div className="h-56 relative">
+                      <img
+                        src={video.image}
+                        alt={video.title}
+                        className="w-full h-full object-cover"
+                      />
+
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="white"
+                          className="w-10 h-10 bg-gray-800 rounded-full p-2"
+                        >
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    <div className="p-5">
+                      <h3 className="font-bold mb-1 text-gray-800">{video.title}</h3>
+                    </div>
+                  </a>
+                ))}
+              </div>
+
+              {videos.length === 0 && (
+                <div className="text-center py-20 text-gray-500">
+                  No videos available at the moment.
                 </div>
-              </div>
+              )}
+            </section>
+          </div>
+        )}
+      </main>
 
-              <div className="p-5">
-                <h3 className="font-bold mb-1">{video.title}</h3>
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      {/* Footer */}
       <div className="hidden md:block">
         <Footer />
       </div>

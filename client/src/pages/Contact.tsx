@@ -14,6 +14,7 @@ const Contact: React.FC = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [mapLoading, setMapLoading] = useState(true);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -126,13 +127,6 @@ const Contact: React.FC = () => {
                 />
               </div>
 
-              <div>
-                <p className="text-sm mb-2">
-                  Upload screenshot of error or issue (jpg,png,gif) (optional)
-                </p>
-                <input type="file" />
-              </div>
-
               <button
                 type="submit"
                 disabled={loading}
@@ -165,7 +159,18 @@ const Contact: React.FC = () => {
             </div>
 
             {/* MAP */}
-            <div className="mt-4 w-full h-[250px] border">
+            <div className="mt-4 w-full h-[250px] border relative">
+
+              {/* Loader */}
+              {mapLoading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                  <div className="flex flex-col items-center">
+                    <div className="w-6 h-6 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+                    <p className="mt-2 text-sm text-blue-600">Loading Map...</p>
+                  </div>
+                </div>
+              )}
+
               <iframe
                 title="map"
                 width="100%"
@@ -173,7 +178,9 @@ const Contact: React.FC = () => {
                 loading="lazy"
                 className="w-full h-full"
                 src="https://www.google.com/maps?q=India&output=embed"
+                onLoad={() => setMapLoading(false)}
               ></iframe>
+
             </div>
           </div>
 

@@ -116,8 +116,17 @@ const Schedule: React.FC = () => {
 
       {/* MAIN CONTENT */}
       <main className="flex-1">
+        {/* FULL SCREEN LOADER */}
         {loading ? (
-          <p className="text-center py-10">Loading matches...</p>
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
+            <div className="flex flex-col items-center">
+              <div className="w-6 h-6 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+
+              <p className="mt-2 text-sm text-blue-600 text-center">
+                Loading Match Schedule...
+              </p>
+            </div>
+          </div>
         ) : (
           <>
             {/* MOBILE UI */}

@@ -19,7 +19,9 @@ const Advertise: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
- 
+  const [mapLoading, setMapLoading] = useState(true);
+
+
 
   // Better handling using name attribute
   const handleInputChange = (
@@ -39,7 +41,7 @@ const Advertise: React.FC = () => {
 
       await axios.post("https://crickpluse.onrender.com/api/advertise", formData);
 
-       toast.success("Submitted successfully");
+      toast.success("Submitted successfully");
 
       setFormData({
         name: "",
@@ -201,12 +203,25 @@ const Advertise: React.FC = () => {
               </p>
             </div>
 
-            <div className="border w-full h-[280px] overflow-hidden">
+            <div className="border w-full h-[280px] overflow-hidden relative">
+
+              {/* Loader */}
+              {mapLoading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                  <div className="flex flex-col items-center">
+                    <div className="w-6 h-6 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+                    <p className="mt-2 text-sm text-blue-600">Loading Map...</p>
+                  </div>
+                </div>
+              )}
+
               <iframe
                 title="map"
                 src="https://www.google.com/maps?q=India&output=embed"
                 className="w-full h-full border-0"
+                onLoad={() => setMapLoading(false)}
               ></iframe>
+
             </div>
           </div>
 

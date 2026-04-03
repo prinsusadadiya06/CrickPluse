@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { User } from "lucide-react";
 import SubscribeModal from "../components/SubscribeModal";
@@ -20,10 +20,11 @@ const Premium: React.FC = () => {
 
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // FETCH FROM BACKEND
+  //Backend API
   useEffect(() => {
     const fetchPlans = async () => {
       try {
+        setLoading(true);
         const res = await axios.get("https://crickpluse.onrender.com/api/plans");
         setPlans(res.data || []);
       } catch (err) {
@@ -92,71 +93,78 @@ const Premium: React.FC = () => {
             <div className="md:border-b border-gray-300 mt-6"></div>
           </div>
 
-          {/* Loading */}
+          {/* FULL PAGE LOADER */}
           {loading && (
-            <p className="mt-10 text-gray-500">Loading plans...</p>
-          )}
-
-          {/* No Plans */}
-          {!loading && plans.length === 0 && (
-            <p className="mt-10 text-gray-500">No plans available</p>
-          )}
-
-          {/* Plans */}
-          {!loading && plans.length > 0 && (
-            <div className="flex flex-col md:flex-row gap-6 md:gap-10 md:mt-10 md:w-[90%] w-[95%] justify-center">
-              {plans.map((plan) => (
-                <div
-                  key={plan._id}
-                  className={`bg-white rounded-xl shadow-md px-5 py-4 flex flex-col justify-between w-full border-2 transition-all ${
-                    selectedPlan === plan._id
-                      ? "border-blue-600 scale-105"
-                      : "border-transparent"
-                  }`}
-                >
-                  <div>
-                    <div className="flex justify-between border-b pb-3 mb-5">
-                      <h3 className="font-semibold text-base md:text-lg">
-                        {plan.name}
-                      </h3>
-                      <span className="font-semibold">{plan.price}</span>
-                    </div>
-
-                    <ul className="ml-5 text-sm text-gray-800 space-y-2">
-                      {plan.features.map((f, i) => (
-                        <li
-                          key={i}
-                          className={
-                            f.startsWith("(") ? "list-none" : "list-disc"
-                          }
-                        >
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="flex flex-wrap gap-3 md:gap-4 mt-8 md:mt-10">
-                    <button
-                      onClick={() => {
-                        setModalOpen(true);
-                        setSelectedPlan(plan._id);
-                      }}
-                      className="border border-gray-300 rounded-full px-6 py-2 bg-[#EBEBEB]"
-                    >
-                      Know More
-                    </button>
-
-                    <Link
-                      to="/login"
-                      className="flex-1 bg-blue-600 text-white rounded-full py-2 text-center"
-                    >
-                      Subscribe
-                    </Link>
-                  </div>
-                </div>
-              ))}
+            <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
+              <div className="flex flex-col items-center">
+                <div className="w-6 h-6 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+                <p className="mt-2 text-sm text-blue-600">Loading Plans...</p>
+              </div>
             </div>
+          )}
+
+          {!loading && (
+            <>
+              {/* No Plans */}
+              {plans.length === 0 && (
+                <p className="mt-10 text-gray-500">No plans available</p>
+              )}
+
+              {plans.length > 0 && (
+                <div className="flex flex-col md:flex-row gap-6 md:gap-10 md:mt-10 md:w-[90%] w-[95%] justify-center">
+                  {plans.map((plan) => (
+                    <div
+                      key={plan._id}
+                      className={`bg-white rounded-xl shadow-md px-5 py-4 flex flex-col justify-between w-full border-2 transition-all ${selectedPlan === plan._id
+                        ? "border-blue-600 scale-105"
+                        : "border-transparent"
+                        }`}
+                    >
+                      <div>
+                        <div className="flex justify-between border-b pb-3 mb-5">
+                          <h3 className="font-semibold text-base md:text-lg">
+                            {plan.name}
+                          </h3>
+                          <span className="font-semibold">{plan.price}</span>
+                        </div>
+
+                        <ul className="ml-5 text-sm text-gray-800 space-y-2">
+                          {plan.features.map((f, i) => (
+                            <li
+                              key={i}
+                              className={
+                                f.startsWith("(") ? "list-none" : "list-disc"
+                              }
+                            >
+                              {f}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="flex flex-wrap gap-3 md:gap-4 mt-8 md:mt-10">
+                        <button
+                          onClick={() => {
+                            setModalOpen(true);
+                            setSelectedPlan(plan._id);
+                          }}
+                          className="border border-gray-300 rounded-full px-6 py-2 bg-[#EBEBEB]"
+                        >
+                          Know More
+                        </button>
+
+                        <Link
+                          to="/login"
+                          className="flex-1 bg-blue-600 text-white rounded-full py-2 text-center"
+                        >
+                          Subscribe
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
           )}
 
           {/* MODAL */}

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 
-// Auth
+// Auth Imports
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import ForgotPassword from "./pages/auth/ForgotPassword";
@@ -10,7 +10,7 @@ import ResetPassword from "./pages/auth/ResetPassword";
 import ResetSuccess from "./pages/auth/ResetSuccess";
 import OtpVerification from "./pages/auth/OtpVerification";
 
-// Pages
+// Pages Imports
 import Home from "./pages/Home";
 import SplashScreen from "./components/SplashScreen";
 import ScrollToTopButton from "./components/ScrollToTopButton";
@@ -31,14 +31,32 @@ import Profile from "./pages/Profile";
 import Videos from "./pages/Videos";
 import NotFound from "./pages/NotFound";
 
-
 function App() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const hasSeenSplash = sessionStorage.getItem("hasSeenSplash");
+
+
+    if (!hasSeenSplash) {
+      setLoading(true);
+    }
+
+    const perfEntries = window.performance.getEntriesByType("navigation");
+    if (perfEntries.length > 0 && (perfEntries[0] as any).type === "reload") {
+      setLoading(true);
+    }
+  }, []);
+
+  const handleFinish = () => {
+    sessionStorage.setItem("hasSeenSplash", "true");
+    setLoading(false);
+  };
 
   return (
     <>
       {loading ? (
-        <SplashScreen onFinish={() => setLoading(false)} />
+        <SplashScreen onFinish={handleFinish} />
       ) : (
         <Router>
           <Toaster richColors position="top-right" duration={5000} />
@@ -69,7 +87,6 @@ function App() {
           </Routes>
           <ScrollToTopButton />
         </Router>
-
       )}
     </>
   );

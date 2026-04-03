@@ -19,10 +19,10 @@ const FAQs: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // FETCH FROM BACKEND
   useEffect(() => {
     const fetchFAQs = async () => {
       try {
+        setLoading(true);
         const res = await axios.get("https://crickpluse.onrender.com/api/faqs");
         setFaqData(res.data || []);
       } catch (error) {
@@ -36,16 +36,22 @@ const FAQs: React.FC = () => {
   }, []);
 
   const toggle = (index: number) => {
-    if (openIndex === index) {
-      setOpenIndex(null);
-    } else {
-      setOpenIndex(index);
-    }
+    setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
     <div className="min-h-screen flex flex-col md:bg-[#ECF0F1]">
       <Header />
+
+      {/* FULL PAGE LOADER */}
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
+          <div className="flex flex-col items-center">
+            <div className="w-6 h-6 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+            <p className="mt-2 text-sm text-blue-600">Loading FAQs...</p>
+          </div>
+        </div>
+      )}
 
       {/* Page Wrapper */}
       <div className="flex-1 min-h-[110vh] bg-[#ECF0F1] md:min-h-[120vh] md:py-10 md:px-6">
@@ -61,11 +67,6 @@ const FAQs: React.FC = () => {
             Find quick answers about subscriptions, live streaming availability,
             billing, and troubleshooting.
           </p>
-
-          {/* Loading */}
-          {loading && (
-            <p className="text-gray-500">Loading FAQs...</p>
-          )}
 
           {/* No Data */}
           {!loading && faqData.length === 0 && (
@@ -86,8 +87,9 @@ const FAQs: React.FC = () => {
                     className="w-full text-left px-6 py-4 font-bold flex items-center gap-3"
                   >
                     <ChevronRight
-                      className={`text-black transition-transform ${openIndex === index ? "rotate-90" : ""
-                        }`}
+                      className={`text-black transition-transform ${
+                        openIndex === index ? "rotate-90" : ""
+                      }`}
                       size={18}
                       strokeWidth={4}
                     />
@@ -96,7 +98,6 @@ const FAQs: React.FC = () => {
 
                   {openIndex === index && (
                     <div className="px-6 pb-6 space-y-4">
-
                       {category.items.map((item, i) => (
                         <div key={i}>
                           <h4 className="font-semibold">{item.question}</h4>
@@ -105,7 +106,6 @@ const FAQs: React.FC = () => {
                           </p>
                         </div>
                       ))}
-
                     </div>
                   )}
 
@@ -121,7 +121,6 @@ const FAQs: React.FC = () => {
         </div>
       </div>
 
-      {/* Footer */}
       <div className="hidden md:block">
         <Footer />
       </div>

@@ -6,7 +6,7 @@ import { toast } from "sonner";
 const Profile: React.FC = () => {
   const [user, setUser] = useState<any>(null);
 
-
+  //Backend API
   useEffect(() => {
     const fetchUser = async () => {
       try {

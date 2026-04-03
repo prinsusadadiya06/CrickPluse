@@ -11,6 +11,7 @@ const MatchDetails: React.FC = () => {
   const [videos, setVideos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  //Backend API
   useEffect(() => {
     const fetchAll = async () => {
       try {
@@ -94,13 +95,12 @@ const MatchDetails: React.FC = () => {
             <div className="flex flex-col items-center gap-2 my-4 md:my-0">
               <span className="text-2xl font-bold text-gray-500">vs</span>
               <span
-                className={`text-lg font-medium ${
-                  item.status.toLowerCase().includes("live")
+                className={`text-lg font-medium ${item.status.toLowerCase().includes("live")
                     ? "text-green-600"
                     : item.status.toLowerCase().includes("upcoming")
-                    ? "text-blue-600"
-                    : "text-gray-600"
-                }`}
+                      ? "text-blue-600"
+                      : "text-gray-600"
+                  }`}
               >
                 {item.status}
               </span>
