@@ -292,7 +292,7 @@ const Home: React.FC = () => {
 
                   <div className="p-5">
                     <h3 className="font-bold mb-1">{item.title}</h3>
-                    <p className="text-gray-500 text-sm ">
+                    <p className="text-gray-500 text-sm line-clamp-2 ">
                       {item.description}
                     </p>
                   </div>

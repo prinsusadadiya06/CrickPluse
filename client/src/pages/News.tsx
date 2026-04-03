@@ -33,7 +33,7 @@ const News: React.FC = () => {
       <Header />
 
       <main className="flex-grow flex flex-col">
-         {/* FULL SCREEN LOADER */}
+        {/* FULL SCREEN LOADER */}
         {loading ? (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
             <div className="flex flex-col items-center">
@@ -76,13 +76,13 @@ const News: React.FC = () => {
                       <span className="text-xs text-gray-400 mt-1">
                         {item.time || "2h ago"}
                       </span>
-                      <p className="hidden md:block text-gray-600 text-sm line-clamp-3 mt-1">
+                      <p className="hidden md:block text-gray-600 text-sm mt-1">
                         {item.description}
                       </p>
                     </div>
 
                     {/* Mobile Only Description */}
-                    <p className="w-full text-gray-600 text-xs line-clamp-2 mt-2 md:hidden">
+                    <p className="w-full text-gray-600 text-xs  mt-2 md:hidden line-clamp-2">
                       {item.description}
                     </p>
                   </Link>
@@ -118,12 +118,13 @@ const News: React.FC = () => {
                       <span className="text-xs text-gray-400 mt-1">
                         {item.time || "2h ago"}
                       </span>
-                      <p className="hidden md:block text-gray-600 text-sm line-clamp-3 mt-1">
+                      <p className="hidden md:block text-gray-600 text-sm mt-1">
                         {item.description}
                       </p>
                     </div>
-
-                    <p className="w-full text-gray-600 text-xs line-clamp-2 mt-2 md:hidden">
+                    
+                    {/* Mobile Only Description */}
+                    <p className="w-full text-gray-600 text-xs line-clamp-2 mt-2 md:hidden line-clamp-2">
                       {item.description}
                     </p>
                   </Link>
