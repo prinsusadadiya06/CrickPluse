@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { User, Mail, Lock, Eye, EyeOff, Apple } from "lucide-react";
+import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
-import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 import { toast } from "sonner";
 
@@ -139,24 +138,6 @@ const Register: React.FC = () => {
                     <span className="px-3 text-sm text-gray-400">OR</span>
                     <div className="flex-1 h-px bg-gray-200"></div>
                 </div>
-
-                {/* Google */}
-                <button
-                    className="w-full flex items-center justify-center gap-3 border py-2.5 rounded-lg hover:bg-gray-50 transition mb-3"
-                    aria-label="Continue with Google"
-                >
-                    {FcGoogle({ size: 20 })}
-                    <span>Continue with Google</span>
-                </button>
-
-                {/* Apple */}
-                <button
-                    className="w-full flex items-center justify-center gap-2 border py-2.5 rounded-lg hover:bg-gray-50 transition"
-                    aria-label="Continue with Apple"
-                >
-                    <Apple size={20} />
-                    Continue with Apple
-                </button>
 
                 {/* Login link */}
                 <p className="text-center text-sm text-gray-500 mt-6">
